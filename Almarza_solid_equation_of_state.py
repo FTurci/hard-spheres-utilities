@@ -1,6 +1,11 @@
 import pylab as pl
 
 
+def eta(rho):
+    return pl.pi/6.*rho
+def d(eta):
+    return eta/pl.pi*6 
+
 def find_solid_p(rho):
     sigma=1.
     p=pl.arange(10,20,0.01 )
@@ -40,7 +45,7 @@ def cs(rho):
     eta=rho/6.*pl.pi
     return (1+eta+eta**2-eta**3)/(1-eta)**3*eta*6./pl.pi
 
-rhofirst=1.105
+rhofirst=1.041
 print "Starting density",rhofirst
 print "Starting pressure",find_solid_p(1.105)
 
@@ -53,9 +58,12 @@ print "packing fractions", pl.array(rhos)/6*pl.pi
 print "solid pressures",ps
 print "fluid pressures",pf
 
-print find_solid_p(.555014632)
+print find_solid_p(d(.555014632))
 
-
+ds=pl.vectorize(d)
+almarza=pl.vectorize(find_solid_p)
+etas=pl.linspace(0.54,1,100)
+pl.savetxt("almarz.txt", zip(etas,almarza(ds(etas))))
 
 
 # # pl.plot(p,f)
